@@ -2,6 +2,7 @@
 
 class TwitterOAuthWP extends TwitterOAuth {
 	function http($url, $method, $postfields = NULL) {
+		$this->http_info = null; // this is never used
 		$options = array(
 			'method' => $method,
 			'timeout' => $this->timeout,
@@ -23,9 +24,14 @@ class TwitterOAuthWP extends TwitterOAuth {
 
 		$response = wp_remote_request($url, $options);
 
+		if (is_wp_error($response)) {
+			$this->http_code = null;
+			$this->http_header = array();
+			return false;
+		}
+
 		$this->http_code = $response['response']['code'];
 		$this->http_header = $response['headers'];
-		$this->http_info = null; // this is never used
 
 		return $response['body'];
 	}
