@@ -2,7 +2,6 @@
 
 class TwitterOAuthWP extends TwitterOAuth {
 	function http($url, $method, $postfields = NULL) {
-		$this->http_info = array();
 		$options = array(
 			'method' => $method,
 			'timeout' => $this->timeout,
